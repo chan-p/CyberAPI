@@ -40,5 +40,5 @@ func main(){
   // e.Get("/api/channel_schedules/:id",tool.Res_json(db))
 
   // サーバー構築 ポート8000
-  e.Run(standard.New(":8000"))
+  e.Run(standard.New(":80"))
 }
