@@ -1,24 +1,41 @@
 package tool
 
 import (
-  "net/http"
-  "github.com/labstack/echo"
+	//apiパッケージ
+	"github.com/labstack/echo"
+	"net/http"
+
+	//mysqlパッケージ
+	"database/sql"
+	_ "github.com/go-sql-driver/mysql"
+
+	//標準パッケージ
+	_ "fmt"
   "time"
+	"strconv"
+  _ "strings"
 )
 
 type Data struct {
-  Id  int       `json:"id"`
-  Title string    `json:"title"`
+  Id        int       `json:"id"`
+  Title     string    `json:"title"`
   CreatedAt time.Time `json:"created_at"`
-  Query string `json:"query"`
+  Query     string    `json:"query"`
 }
 
-func Res_json() echo.HandlerFunc {
+func db_test(db *sql.DB) []string{
+  query := "select *  from User limit 1"
+  return extract_from_db(db, query)
+}
+
+func Res_json(db *sql.DB) echo.HandlerFunc {
   return func(c echo.Context) error {
     loc, _ := time.LoadLocation("Asia/Tokyo")
+    data := db_test(db)
+    id, _ := strconv.Atoi(data[0])
     d := &Data{
-      Id: 1,
-      Title: "自動変更完成pull もう一度確認 再度確認",
+      Id: id,
+      Title: data[1],
       CreatedAt: time.Date(2014, 8, 25, 0, 0, 0, 0, loc),
       Query: c.FormValue("name"),
     }

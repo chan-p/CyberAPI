@@ -13,6 +13,7 @@ import (
   // ディレクトリ
   "./tool"
   _ "./model"
+  _ "fmt"
 )
 
 func db_connect() *sql.DB {
@@ -34,7 +35,7 @@ func main(){
   e.Use(middleware.Recover())
 
   // モデル
-  e.Get("/json",tool.Res_json())
+  e.Get("/json",tool.Res_json(db))
 
   //サーバー構築 ポート8000
   e.Run(standard.New(":8000"))
