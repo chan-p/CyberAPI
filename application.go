@@ -11,8 +11,8 @@ import (
   _ "github.com/go-sql-driver/mysql"
 
   // ディレクトリ
-  "./tool"
-  _ "./model"
+  _ "./tool"
+  "./model"
   _ "fmt"
 )
 
@@ -35,8 +35,10 @@ func main(){
   e.Use(middleware.Recover())
 
   // モデル
-  e.Get("/json",tool.Res_json(db))
+  e.Get("/api/series",model.Echo_api_no1(db))
+  // e.Get("/api/channel_schedules",tool.Res_json(db))
+  // e.Get("/api/channel_schedules/:id",tool.Res_json(db))
 
-  //サーバー構築 ポート8000
+  // サーバー構築 ポート8000
   e.Run(standard.New(":8000"))
 }

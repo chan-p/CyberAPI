@@ -10,7 +10,7 @@ import (
 	_ "github.com/go-sql-driver/mysql"
 
 	//標準パッケージ
-	_ "fmt"
+	"fmt"
   "time"
 	"strconv"
   _ "strings"
@@ -24,7 +24,7 @@ type Data struct {
 }
 
 func db_test(db *sql.DB) []string{
-  query := "select *  from User limit 1"
+  query := "select * from User where email LIKE '%@%'"
   return extract_from_db(db, query)
 }
 
@@ -32,6 +32,7 @@ func Res_json(db *sql.DB) echo.HandlerFunc {
   return func(c echo.Context) error {
     loc, _ := time.LoadLocation("Asia/Tokyo")
     data := db_test(db)
+    fmt.Println(data)
     id, _ := strconv.Atoi(data[0])
     d := &Data{
       Id: id,
@@ -43,6 +44,6 @@ func Res_json(db *sql.DB) echo.HandlerFunc {
     if err := c.Bind(d); err != nil{
       return err
     }
-    return c.JSON(http.StatusOK,d)
+    return c.JSON(http.StatusOK, d)
   }
 }
