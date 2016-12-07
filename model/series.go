@@ -41,8 +41,14 @@ func series_init(c echo.Context) query_data {
 
 func (query query_data) get_data() string {
   queray := "select id, content, casts ,crews from series"
-  return queray
-  // for i := 0; i < 
+  list := []string{"name","casts","crews"}
+  for i := 0; i < 4;i = i + 1 {
+    _ ,OK := query[list(i)]
+    if OK != nil{
+      queray += list[i]
+    }
+  }
+  fmt.Println(queray)
 }
 
 func Echo_api_no1(db *sql.DB) echo.HandlerFunc {
