@@ -58,6 +58,7 @@ type Res_Json_Member_List struct {
 type Error struct {
   Massege string `json:massege`
 }
+
 func db_connect() *gorm.DB{
   db,err := gorm.Open("mysql","root:tomohi6@tcp(db01.wsl.mind.meiji.ac.jp:3306)/wsl_member_table_A")
   if err != nil {
@@ -84,12 +85,8 @@ func ErrorCheck(id int) bool{
 
 func MemberAdd(db *gorm.DB) echo.HandlerFunc {
   return func(c echo.Context) error {
-    fmt.Println(c.QueryParam("grade"))
-    fmt.Println("OKOKO")
     member := member_init(c, db)
-    fmt.Println(member)
     grade := Grade{Name: c.QueryParam("grade")}
-    fmt.Println(grade.Name)
     db.First(&grade, "name = ?", grade.Name)
     if ErrorCheck(grade.Id) != true {
       em := Error{Massege: "not exit grade"}
@@ -206,7 +203,7 @@ func MemberUpdate(db *gorm.DB) echo.HandlerFunc {
 func ShowGradAlle(db *gorm.DB) echo.HandlerFunc {
   return func(c echo.Context) error {
     grade  := Grade{}
-    db.First(&grade , "name = ?", c.QueryParam("name"))
+    db.First(&grade , "name = ?", c.QueryParam("grade"))
     if ErrorCheck(grade.Id) != true {
       em := Error{Massege: "not exit grade"}
       return c.JSON(404, em)
@@ -224,9 +221,9 @@ func ShowGradAlle(db *gorm.DB) echo.HandlerFunc {
 func ShowTeamCount(db *gorm.DB) echo.HandlerFunc {
   return func(c echo.Context) error {
     project  := Project{}
-    db.First(&project , "name = ?", c.QueryParam("name"))
+    db.First(&project , "name = ?", c.QueryParam("team"))
     if ErrorCheck(project.Id) != true {
-      em := Error{Massege: "not exit grade"}
+      em := Error{Massege: "not exit team"}
       return c.JSON(404, em)
     }
     member_project := []Member_Project{}
