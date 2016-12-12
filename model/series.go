@@ -9,7 +9,8 @@ import (
 
 
 	//mysqlパッケージ
-	"database/sql"
+  "github.com/jinzhu/gorm"
+	_ "database/sql"
 	_ "github.com/go-sql-driver/mysql"
 
 	//標準パッケージ
@@ -51,9 +52,9 @@ func (query query_data) get_data() string {
   fmt.Println(queray)
 }
 
-func Echo_api_no1(db *sql.DB) echo.HandlerFunc {
+func Echo_add(db *sql.DB) echo.HandlerFunc {
   return func(c echo.Context) error {
-    data := series_init(c)
+    data := _init(c)
     fmt.Println(data)
     status := data.get_data()
     return c.JSON(http.StatusOK,status)
